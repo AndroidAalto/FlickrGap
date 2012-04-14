@@ -38,13 +38,20 @@ var map;
 
 //Loading current position google maps
 function initializeMap(position) {
+	var myLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
     var myOptions = {
-      center: new google.maps.LatLng(position.coords.latitude,position.coords.longitude),
-      zoom: 16,
+      center: myLocation,
+      zoom: 13,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     map = new google.maps.Map(document.getElementById("map_canvas"),
         myOptions);
+    
+	var marker = new google.maps.Marker({
+		position: myLocation,
+		map: map,
+		icon: "ownlocation-marker.png"
+	});
  }
 
 function getFlickrPhotos(position){
