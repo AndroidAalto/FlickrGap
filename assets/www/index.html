@@ -1,10 +1,66 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-<head>
-<title>PhoneGap</title>
-<script type="text/javascript" charset="utf-8" src="cordova-1.x.x.js"></script>
-</head>
-<body>
-<iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=fi&amp;geocode=&amp;q=otaniemi&amp;aq=&amp;sll=60.166586,24.943555&amp;sspn=0.021819,0.084543&amp;t=h&amp;ie=UTF8&amp;hq=&amp;hnear=Otaniemi,+Espoo,+Suomi&amp;z=14&amp;ll=60.18414,24.830084&amp;output=embed"></iframe><br /><small><a href="http://maps.google.com/maps?f=q&amp;source=embed&amp;hl=fi&amp;geocode=&amp;q=otaniemi&amp;aq=&amp;sll=60.166586,24.943555&amp;sspn=0.021819,0.084543&amp;t=h&amp;ie=UTF8&amp;hq=&amp;hnear=Otaniemi,+Espoo,+Suomi&amp;z=14&amp;ll=60.18414,24.830084" style="color:#0000FF;text-align:left">Näytä suurempi kartta</a></small>
-</body>
+  <head>
+     <meta name="viewport" content="initial-scale=3.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+    <title>Device Properties Example</title>
+
+    <script type="text/javascript" charset="utf-8" src="cordova-1.6.0.js"></script>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?sensor=true">
+    </script>
+    <script type="text/javascript" charset="utf-8">
+	//Loading current position google maps
+	function initialize(position) {
+        var myOptions = {
+          center: new google.maps.LatLng(position.coords.latitude,position.coords.longitude),
+          zoom: 8,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            myOptions);
+     }
+	
+    // Wait for Cordova to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // Cordova is ready
+    //
+    function onDeviceReady() {
+        navigator.geolocation.getCurrentPosition(onSuccess, onError);        
+    }
+
+    // onSuccess Geolocation
+    //
+    function onSuccess(position) {
+        var element = document.getElementById('geolocation');
+        element.innerHTML = 'Latitude: '           + position.coords.latitude              + '<br />' +
+                            'Longitude: '          + position.coords.longitude             + '<br />' +
+                            'Altitude: '           + position.coords.altitude              + '<br />' +
+                            'Accuracy: '           + position.coords.accuracy              + '<br />' +
+                            'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '<br />' +
+                            'Heading: '            + position.coords.heading               + '<br />' +
+                            'Speed: '              + position.coords.speed                 + '<br />' +
+                            'Timestamp: '          + new Date(position.timestamp)          + '<br />';
+        initialize(position);
+    }
+
+    // onError Callback receives a PositionError object
+    //
+    function onError(error) {
+        alert('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+    }
+
+    </script>
+  </head>
+  <body>
+    <p id="geolocation">Finding geolocation...</p>
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
 </html>
